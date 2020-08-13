@@ -7,18 +7,19 @@ GLfloat R = 0.5f;
 const GLfloat PI = 3.24250265357f;
  GLfloat color[] = { 1,0,0 };
 
- GLfloat xAngle = 30;
- GLfloat yAngle = 30;
+ GLfloat xAngle = 0;
+ GLfloat yAngle = 0;
 void display(void)
 {
-    glClearColor(1,1, 1, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(1, 1, 1, 1.0);
+
     glLoadIdentity();
     gluLookAt(0.0, 0.0, 3.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     glColor3fv(color);
     glRotated(xAngle, 1, 0, 0);
-    glRotated(yAngle, 0, 71, 0);
-
+    glRotated(yAngle, 0, 1, 0);
     glBegin(GL_LINES);
     GLfloat** nodes = new GLfloat *[n];
     for (int i = 0; i < n; i++)
@@ -35,9 +36,8 @@ void display(void)
         }
     }
     glEnd();
-
-
-    glFlush();
+    glutSwapBuffers();
+   
 }
 void reshape(int w, int h) {
     glViewport(0, 0, (GLsizei)w, (GLsizei)h);
@@ -66,7 +66,7 @@ void keyboard(int key, int x, int y) {
     default:
         break;
     }
-    glutPostRedisplay();
+    glutPostRedisplay();//消息响应后必须被重绘
 }
 void fillOption(GLint selectedOption)//菜单消息响应函数
 {
@@ -172,7 +172,7 @@ void attachMenu() {
 void main(int argc, char** argv)
 {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_SINGLE);
+glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
 
     int cx = glutGet(GLUT_SCREEN_WIDTH);
 
